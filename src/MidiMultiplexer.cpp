@@ -20,10 +20,10 @@ struct MidiMultiplexer : Module {
   //   width kNinput)
   //   
   //   <-- kNinput -->
-  //   (o) (o) (o) (o) \
+  //   (o) (o) (o) (o) |
   //   (o) (o) (o) (o) | kNOutput
   //   (o) (o) (o) (o) |
-  //   (o) (o) (o) (o) /
+  //   (o) (o) (o) (o) |
   static const int kNOut = 4;
   
   enum ParamIds {
