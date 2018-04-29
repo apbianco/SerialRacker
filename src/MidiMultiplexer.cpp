@@ -159,25 +159,18 @@ struct MidiMultiplexer : Module {
 	  // If the current knob value changed, just use the output from the
 	  // knob and set the sampled value to be that value.
 	  if (knob_changed_values[i]) {
-	    // Filter the chanels
-	    float output = (channelFilter[i][j].out *
-			    inputs[IN_INPUT + i].value);
-	    outputs[output_index].value = output;
-	    sampled_values2[i][j] = output;
-	  // If the current knob value didn't change, use the sampled
-	  // value.
-	  } else {
-	    outputs[output_index].value = sampled_values2[i][j];
+	    // Compute the output and store it directly as a sampled
+	    // value.
+	    sampled_values2[i][j] = (channelFilter[i][j].out *
+				     inputs[IN_INPUT + i].value);
 	  }
-	  // In any case, store what we're going to write to the UI a
-	  // CV output.
+	  // All output from the current channel are copied as values
+	  // to be displayed.
 	  cv_values_to_display[i] = sampled_values2[i][j];
 	}
-	// We're not processing the selected channel, we output the
-	// previously sampled value.
-	else {
-	  outputs[output_index].value = sampled_values2[i][j];
-	}
+	// An now just output the sampled value. This is valid for all
+	// rows, regardless of whether it's the active one or not.
+	outputs[output_index].value = sampled_values2[i][j];
       }
     }
 
@@ -347,7 +340,7 @@ MidiMultiplexerWidget::MidiMultiplexerWidget(MidiMultiplexer *module) :
   cv_values->box.size = mm2px(Vec(45.02, 10));
   cv_values->multiline = false;
   module->cv_values = cv_values;
-  field->text = "0.00 0.00 0.00 0.00";
+  cv_values->text = "0.00 0.00 0.00 0.00";
   addChild(cv_values);
 
   // The output ports
