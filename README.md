@@ -12,7 +12,10 @@ the values it last saw.*
 In short, when you connect it to a keyboard with, say, four knobs, you
 can output 4 times that many CVs, as the diagram below depicts:
 
-![MidiMux diagram](doc/res/midimux-1.png)
+<p align="center">
+  <img src="doc/res/midimux-2.png" width="250px"/>
+</p>
+
 
 
 
