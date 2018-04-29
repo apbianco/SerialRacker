@@ -67,7 +67,7 @@ struct MidiMultiplexer : Module {
 
   // Sampled outut values - these are issues on the outputs each time
   // the module runs.
-  float sampled_values2[kNInput][kNOut] = {
+  float sampled_values[kNInput][kNOut] = {
     {0.0f, 0.0f, 0.0f, 0.0f},
     {0.0f, 0.0f, 0.0f, 0.0f},
     {0.0f, 0.0f, 0.0f, 0.0f},
@@ -161,16 +161,16 @@ struct MidiMultiplexer : Module {
 	  if (knob_changed_values[i]) {
 	    // Compute the output and store it directly as a sampled
 	    // value.
-	    sampled_values2[i][j] = (channelFilter[i][j].out *
-				     inputs[IN_INPUT + i].value);
+	    sampled_values[i][j] = (channelFilter[i][j].out *
+				    inputs[IN_INPUT + i].value);
 	  }
 	  // All output from the current channel are copied as values
 	  // to be displayed.
-	  cv_values_to_display[i] = sampled_values2[i][j];
+	  cv_values_to_display[i] = sampled_values[i][j];
 	}
 	// An now just output the sampled value. This is valid for all
 	// rows, regardless of whether it's the active one or not.
-	outputs[output_index].value = sampled_values2[i][j];
+	outputs[output_index].value = sampled_values[i][j];
       }
     }
 
@@ -225,7 +225,7 @@ struct MidiMultiplexer : Module {
     json_t *values = json_array();
     for (int i = 0; i < kNInput; ++i) {
       for (int j = 0; j < kNOut; ++j) {
-	json_t *value = json_real(sampled_values2[i][j]);
+	json_t *value = json_real(sampled_values[i][j]);
 	json_array_append_new(values, value);
       }
     }
@@ -254,7 +254,7 @@ struct MidiMultiplexer : Module {
       for (int j = 0; j < kNOut; ++j) {
 	json_t *value = json_array_get(values, i * kNInput + j);
 	if (value) {
-	  sampled_values2[i][j] = json_real_value(value);
+	  sampled_values[i][j] = json_real_value(value);
 	}
       }
     }
