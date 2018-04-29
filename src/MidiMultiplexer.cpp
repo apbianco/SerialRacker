@@ -1,7 +1,7 @@
 // A Knobulator.
 //
 // Read the documentation at
-// https://github.com/apbianco/SerialRacker/tree/master/MidiMux
+// https://github.com/apbianco/SerialRacker/blob/master/README.md
 
 #include "SerialRacker.hpp"
 
