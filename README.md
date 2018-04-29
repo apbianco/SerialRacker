@@ -13,7 +13,7 @@ In short, when you connect it to a keyboard with, say, four knobs, you
 can output 4 times that many CVs, as the diagram below depicts:
 
 <p align="center">
-  <img src="doc/res/midimux-2.png" width="250px"/>
+  <img src="doc/res/midimux-2.png" width="500px"/>
 </p>
 
 
