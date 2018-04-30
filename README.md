@@ -19,7 +19,7 @@ can output 4 times that many CVs, as the diagram below depicts:
 Useful links:
 
 - [VCV Rack Official User Group Discussion](https://www.facebook.com/groups/vcvrack/permalink/178105996182886/)
-- [Issue tracker] https://github.com/VCVRack/community/issues/461
+- [Issue tracker](https://github.com/VCVRack/community/issues/461)
 
 
 
