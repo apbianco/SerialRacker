@@ -28,6 +28,7 @@ struct MidiMultiplexer : Module {
   
   enum ParamIds {
     CHANNELS_PARAM,
+    PREV_INPUT_BUTTON,
     NEXT_INPUT_BUTTON,
     NUM_PARAMS
   };
@@ -46,9 +47,10 @@ struct MidiMultiplexer : Module {
   };
 
   // The clock input to move to the next output row and the button to
-  // achieve the same result.
+  // move to the next and previous channel.
   SchmittTrigger clockTrigger;
   SchmittTrigger nextTrigger;
+  SchmittTrigger prevTrigger;
 
   // Limiter to help produce the final output
   SlewLimiter channelFilter[kNInput][kNOut];
@@ -109,8 +111,14 @@ struct MidiMultiplexer : Module {
     if (nextTrigger.process(params[NEXT_INPUT_BUTTON].value)) {
       new_channel++;
     }
+    if (prevTrigger.process(params[PREV_INPUT_BUTTON].value)) {
+      new_channel--;
+    }
     // The maximum number of channels can be dynamically adjusted. We
-    // recompute the limit now.
+    // recompute the limits now.
+    if (new_channel < 0) {
+      new_channel = max_number_channels - 1;
+    }
     new_channel %= max_number_channels;
     bool channel_changed = (new_channel != channel ? true : false);
     channel = new_channel;
@@ -311,18 +319,21 @@ MidiMultiplexerWidget::MidiMultiplexerWidget(MidiMultiplexer *module) :
       TMidiMultiplexer::IN_INPUT + i));
   }
 
-  // Next line: advance to next and its associated button, the switch
-  // selecting how deep the bank goes
-  //
-  // The jack that allows to change to advance to the next row
+  // Next line: advance to next/previous and its associated buttons,
+  // the jack that allows to change to advance to the next row and the
+  // switch selecting how deep the bank goes
+  addParam(ParamWidget::create<CKD6>(
+    mm2px(AVec(5.655-1, 84.118+8.408)), module,
+    TMidiMultiplexer::PREV_INPUT_BUTTON, 0.0f, 1.0f, 0.0f));
   addInput(Port::create<PJ301MPort>(
-    mm2px(PortVec(5.121, 83.522)), Port::INPUT, module,
+    mm2px(PortVec(15.803, 83.522)), Port::INPUT, module,
     TMidiMultiplexer::NEXT_INPUT));
   addParam(ParamWidget::create<CKD6>(
-    mm2px(AVec(18.813, 83.985+8.408)), module,
+    mm2px(AVec(26.923-1, 84.118+8.408)), module,
     TMidiMultiplexer::NEXT_INPUT_BUTTON, 0.0f, 1.0f, 0.0f));
+
   addParam(ParamWidget::create<CKSSThree>(
-    mm2px(AVec(37.769, 82.663+10.054)), module,
+    mm2px(AVec(39.885, 82.663+10.054)), module,
     TMidiMultiplexer::CHANNELS_PARAM, 0.0f, 2.0f, 0.0f));
 
   // The output label field
