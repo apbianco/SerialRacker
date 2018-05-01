@@ -16,6 +16,10 @@ can output 4 times that many CVs, as the diagram below depicts:
   <img src="doc/res/midimux-2.png" width="500px"/>
 </p>
 
+Revision history:
+- 0.6.0: Initial release
+- 0.6.1: Adding PREV button
+
 Useful links:
 
 - [VCV Rack Official User Group Discussion](https://www.facebook.com/groups/vcvrack/permalink/178105996182886/)
